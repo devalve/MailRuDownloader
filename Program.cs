@@ -14,7 +14,8 @@ string TOTAL_ITEMS_URL = linkInfo.Where(i => i.Name == "total").First().Url;
 
 if (string.IsNullOrWhiteSpace(TOTAL_ITEMS_URL) || string.IsNullOrWhiteSpace(BASE_METAINFO_URL))
 {
-    Console.WriteLine("Сначала заполните total и meta в файле links.txt");
+    Console.WriteLine("Сначала заполните total и meta в файле links.txt. Нажмите любую клавишу для выхода...");
+    Console.ReadKey();
     return;
 }
 const string CACHE_FILE = "videos.json";
@@ -84,7 +85,9 @@ void SaveToJson(IEnumerable<VideoInfoToDb> videoLinks)
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Ошибка при сохранении JSON: {ex.Message}");
+        Console.WriteLine($"Ошибка при сохранении JSON: {ex.Message}.Нажмите любую клавишу для выхода...");
+        Console.ReadKey();
+        return;
     }
 }
 
@@ -161,13 +164,14 @@ async Task GoToServerAsync(
 
         Console.WriteLine($"Все видео успешно загружены. Начинается конвертация в {VideoFormats.MP3}");
         await ConvertToWavAsync(videoLinks.Where(i => i.Title.Contains(filter, StringComparison.InvariantCultureIgnoreCase)));
-        Console.WriteLine($"Все видео успешно конвертированы в {VideoFormats.MP3} и загружены в папку 'output/'.");
-
+        Console.WriteLine($"Все видео успешно конвертированы в {VideoFormats.MP3} и загружены в папку 'output/'. Нажмите любую клавишу для выхода...");
+        Console.ReadKey();
         return;
     }
     catch (Exception e)
     {
-        Console.WriteLine($"Ошибка: {e.Message}");
+        Console.WriteLine($"Ошибка: {e.Message}. Нажмите любую клавишу для выхода...");
+        Console.ReadKey();
         return;
     }
 }
@@ -200,6 +204,8 @@ async Task GoToFileAsync(
             }
             else
             {
+                Console.WriteLine($"Нажмите любую клавишу для выхода...");
+                Console.ReadKey();
                 return;
             }
         }
@@ -209,16 +215,22 @@ async Task GoToFileAsync(
         if (videoLinks.Count == 0)
         {
             Console.WriteLine("Не найдено ни одного подходящего файла.");
+            Console.WriteLine($"Нажмите любую клавишу для выхода...");
+            Console.ReadKey();
             return;
         }
         Console.WriteLine($"Загружено {videoLinks.Count} видео из локального файла.Начинается конвертация");
 
         await ConvertToWavAsync(videoLinks);
+        Console.WriteLine($"Нажмите любую клавишу для выхода...");
+        Console.ReadKey();
         return;
     }
     catch (Exception ex)
     {
         Console.WriteLine($"Не удалось загрузить данные из файла: {ex.Message}");
+        Console.WriteLine($"Нажмите любую клавишу для выхода...");
+        Console.ReadKey();
         return;
     }
 }
@@ -292,6 +304,8 @@ async Task StartProgramAsync(
         if (videoResponseData is null)
         {
             Console.WriteLine("Ошибка: ответ пришёл пустым");
+            Console.WriteLine($"Нажмите любую клавишу для выхода...");
+            Console.ReadKey();
             return;
         }
 
@@ -305,6 +319,8 @@ async Task StartProgramAsync(
         if (wrapper is { Payload: null })
         {
             Console.WriteLine($"Ошибка: не получилось сконвертировать пришедшую {nameof(VideoResponseData)}");
+            Console.WriteLine($"Нажмите любую клавишу для выхода...");
+            Console.ReadKey();
             return;
         }
         Console.WriteLine("Успешно сконвертировали данные ответа.");
@@ -323,6 +339,8 @@ async Task StartProgramAsync(
         if (Console.ReadLine()?.ToLower() == "y")
         {
             await GoToFileAsync(videoLinks);
+            Console.WriteLine($"Нажмите любую клавишу для выхода...");
+            Console.ReadKey();
             return;
         }
         else
@@ -331,7 +349,8 @@ async Task StartProgramAsync(
             await GoToServerAsync(
                 wrapper.Payload.Total,
                 videoLinks);
-
+            Console.WriteLine($"Нажмите любую клавишу для выхода...");
+            Console.ReadKey();
             return;
         }
     }
@@ -341,7 +360,8 @@ async Task StartProgramAsync(
         await GoToServerAsync(
             wrapper.Payload.Total,
             videoLinks);
-
+        Console.WriteLine($"Нажмите любую клавишу для выхода...");
+        Console.ReadKey();
         return;
     }
 }
