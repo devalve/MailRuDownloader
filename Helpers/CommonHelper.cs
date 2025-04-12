@@ -10,5 +10,4 @@ public static class CommonHelper
         }
         return title;
     }
-
 }
