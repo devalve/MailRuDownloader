@@ -6,8 +6,17 @@ using System.Net;
 
 var videoLinks = new List<VideoInfoToDb>();
 
-const string BASE_METAINFO_URL = "";
-const string TOTAL_ITEMS_URL = "";
+var fileContent = File.ReadAllText("links.txt");
+var linkInfo = JsonConvert.DeserializeObject<List<LinkInfo>>(fileContent);
+
+string BASE_METAINFO_URL = linkInfo.Where(i => i.Name == "meta").First().Url;
+string TOTAL_ITEMS_URL = linkInfo.Where(i => i.Name == "total").First().Url;
+
+if (string.IsNullOrWhiteSpace(TOTAL_ITEMS_URL) || string.IsNullOrWhiteSpace(BASE_METAINFO_URL))
+{
+    Console.WriteLine("Сначала заполните total и meta в файле links.txt");
+    return;
+}
 const string CACHE_FILE = "videos.json";
 
 #region Сбор инфы и старт
@@ -31,6 +40,7 @@ await StartProgramAsync(videoLinks, TOTAL_ITEMS_URL, CACHE_FILE, archiveCookie, 
 #endregion
 
 #region Приватные методы
+
 async Task ConvertToWavAsync(IEnumerable<VideoInfoToDb> videoLinks)
 {
     foreach (var video in videoLinks)

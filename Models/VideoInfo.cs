@@ -157,3 +157,12 @@ public class VideoInfoToDb
     [JsonProperty(nameof(ExpiredAt))]
     public DateTime ExpiredAt { get; set; }
 }
+
+public class LinkInfo
+{
+    [JsonProperty("name")]
+    public string Name { get; set; }
+
+    [JsonProperty("url")]
+    public string Url { get; set; }
+}
