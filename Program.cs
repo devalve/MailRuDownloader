@@ -162,9 +162,9 @@ async Task GoToServerAsync(
 
         SaveToJson(videoLinks);
 
-        Console.WriteLine($"Все видео успешно загружены. Начинается конвертация в {VideoFormats.MP3}");
+        Console.WriteLine($"Все видео успешно загружены. Начинается конвертация в {VideoFormats.WAV}");
         await ConvertToWavAsync(videoLinks.Where(i => i.Title.Contains(filter, StringComparison.InvariantCultureIgnoreCase)));
-        Console.WriteLine($"Все видео успешно конвертированы в {VideoFormats.MP3} и загружены в папку 'output/'. Нажмите любую клавишу для выхода...");
+        Console.WriteLine($"Все видео успешно конвертированы в {VideoFormats.WAV} и загружены в папку 'output/'. Нажмите любую клавишу для выхода...");
         Console.ReadKey();
         return;
     }
